@@ -1,56 +1,34 @@
 #include <iostream>
-#include <fstream>
+#include <cstdlib>
+#include <iomanip>
+#include "Header.h"
 
 using namespace std;
-
-bool isfound(string sub)
+HANDLE X = GetStdHandle(STD_OUTPUT_HANDLE); //for change the color in the console
+//to print the menu of the system
+void print(FoodItem f[10])
 {
-    ifstream file ;
-    file.open("dictionaryEdit.txt",ios::in);
-    if (file.fail())
-    {
-        cout<<"the file cant be opened"<<endl;
-        return false;
-    }
+	SetConsoleTextAttribute(X, FOREGROUND_INTENSITY | FOREGROUND_INTENSITY);
+	cout << "         food item             " << "price           " << "Quantity" << endl << endl;
 
-    bool a = false;
-    string temp;
-
-    while ( !file.eof() )
-    {
-        string temp;
-        getline( file , temp );
-        if( temp == sub )
-        {
-            return true;
-        }
-    }
-    return a;
-}
-
-void sub_string( string x, int y = 0, string sub = "" )
-{
-    if ( y == x.length() )
-    {
-        if( isfound(sub) == true )
-        {
-            cout<<sub<<endl;
-        }
-
-    }
-    else
-    {
-        sub_string( x, y+1, sub         );
-        sub_string( x, y+1, sub + x[y]  );
-    }
+	for (int i = 0; i < 10; i++)
+	{ 
+		cout <<setw(2)<< i+1 << " -";
+		f[i].print();
+	}
 }
 
 int main()
 {
-    string word;
-    cout<<"enter the word : "<< endl;
-    cin>>word;
-    sub_string( word );
+	FoodItem food[10];
+	coins coin;
+	menu(food);
+	while (true)
+	{
+	print(food);
+	int choose = isfound(food);
+	food[choose].output(coin);
+	}
 
-    return 0;
+	return 0;
 }
